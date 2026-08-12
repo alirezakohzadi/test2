@@ -90,6 +90,7 @@ export interface ProductGroupCategory {
 
 export interface Brand {
   id: string;
+  slug: string;
   name: string;
   logo: string;
   persianName: string;
@@ -144,6 +145,7 @@ export interface Product {
   brand: string;
   category: string;
   image: string;
+  galleryImages?: string[];
   price: number;
   originalPrice?: number;
   discountPercentage?: number;
@@ -155,6 +157,12 @@ export interface Product {
   badge?: string;
   bgGlowColor?: string; // e.g. 'bg-emerald-500/10'
   description?: string;
+  shortDescription?: string;
+  usageInstructions?: string;
+  ingredients?: string;
+  attributes?: Record<string, any>;
+  stockQuantity?: number;
+  salesCount?: number;
   inStock?: boolean;
   volumeOrSize?: string;
   // Django SEO attributes & schema details
@@ -200,8 +208,11 @@ export interface DjangoProduct {
   is_golden_offer?: boolean;
   badge?: string;
   description?: string;
+  short_description?: string;
   usage_instructions?: string;
   ingredients?: string;
+  attributes?: Record<string, any>;
+  sales_count?: number;
   bg_glow_color?: string;
   seo_title?: string;
   seo_description?: string;

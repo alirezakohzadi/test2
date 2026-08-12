@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './apiClient';
 import { SITE_DOMAIN } from '../utils/seo';
 import { Product, Article, DjangoCategory } from '../types';
 
@@ -26,7 +27,8 @@ export async function fetchDynamicSitemapXML(
   articles: Article[] = []
 ): Promise<string> {
   try {
-    const res = await fetch('/api/sitemap/');
+    const backendOrigin = new URL(API_BASE_URL).origin;
+    const res = await fetch(`${backendOrigin}/api/sitemap/`);
     if (res.ok) {
       const data: DjangoSitemapResponse = await res.json();
       return buildXMLFromSitemapUrls(data.urls);
