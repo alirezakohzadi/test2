@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, X, ShoppingBag, Sparkles, Star, Loader2 } from 'lucide-react';
+import { Search, X, ShoppingBag, Star, Loader2 } from 'lucide-react';
 import { Product } from '../types';
 import { searchService } from '../services/searchService';
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  products?: Product[];
   onSelectProduct: (product: Product) => void;
   onAddToCart: (product: Product) => void;
 }
@@ -17,7 +16,6 @@ interface SearchModalProps {
 export const SearchModal: React.FC<SearchModalProps> = ({
   isOpen,
   onClose,
-  products = [],
   onSelectProduct,
   onAddToCart,
 }) => {
@@ -38,8 +36,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
       setLoading(true);
       setError(false);
       try {
-        const res = await searchService.globalSearch(searchTerm);
+        const [res, suggestionRes] = await Promise.all([
+          searchService.globalSearch(searchTerm),
+          searchService.getSearchSuggestions(searchTerm),
+        ]);
         setSearchResults(res.products);
+        setSuggestions(suggestionRes);
       } catch {
         setSearchResults([]);
         setError(true);
@@ -49,18 +51,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     }, 250);
 
     return () => clearTimeout(timer);
-  }, [searchTerm, products]);
-
-  const popularTags = [
-    'ضدآفتاب',
-    'سرم ویتامین سی',
-    'کرم ضد لک',
-    'شامپو کافئین',
-    'بایومارین',
-    'ویتاپلکس',
-    'مولتی ویتامین',
-    'رتینول'
-  ];
+  }, [searchTerm]);
 
   const filteredProducts = searchResults;
 
@@ -116,27 +107,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
             {/* Content Area */}
             <div className="p-5 overflow-y-auto flex-1 space-y-5">
-              {/* Popular Tags */}
-              {!searchTerm && (
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-3">
-                    <Sparkles className="w-4 h-4 text-[#D4AF37]" />
-                    <span>جستجوهای محبوب کاربران:</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {popularTags.map((tag, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSearchTerm(tag)}
-                        className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-[#0D7366]/10 hover:text-[#0D7366] text-slate-600 text-xs font-medium transition-colors border border-slate-200/60"
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               {/* Search Results */}
               {searchTerm && (
                 <div>
