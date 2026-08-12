@@ -72,73 +72,11 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [newReviewName, setNewReviewName] = useState('');
   const [newReviewText, setNewReviewText] = useState('');
   const [newReviewRating, setNewReviewRating] = useState(5);
-  const [reviewsList, setReviewsList] = useState([
-    {
-      id: 'rev-1',
-      author: 'مریم کاظمی',
-      rating: 5,
-      date: '۱۲ مرداد ۱۴۰۳',
-      comment: 'واقعاً محصول عالی و اورجینالی بود. تاثیرش بعد از دو هفته استفاده کاملاً مشخص شد. بسته‌بندی داروخانه‌ای نوژاشاپ هم بسیار تمیز بود.',
-      verified: true,
-      likes: 14,
-    },
-    {
-      id: 'rev-2',
-      author: 'دکتر علیرضا حبیبی (متخصص پوست)',
-      rating: 5,
-      date: '۵ مرداد ۱۴۰۳',
-      comment: 'ترکیبات این فرآورده کاملاً استاندارد و منطبق بر آخرین استانداردهای درماتولوژی است. به بیماران خودم هم تجویز می‌کنم.',
-      verified: true,
-      likes: 28,
-    },
-    {
-      id: 'rev-3',
-      author: 'سارا رضایی',
-      rating: 4,
-      date: '۲۸ تیر ۱۴۰۳',
-      comment: 'بافت سبک و جذب سریعی داره. بوی ملایم و مطبوعی هم داره. فقط کاش حجمش یکم بیشتر بود ولی در کل ارزش خرید بالایی داره.',
-      verified: true,
-      likes: 8,
-    },
-    {
-      id: 'rev-4',
-      author: 'مهندس حسینی',
-      rating: 5,
-      date: '۱۵ تیر ۱۴۰۳',
-      comment: 'ارسال فوری داروخانه نوژاشاپ عالی بود. اصالت کالا هم از سامانه تی‌تک غذا و دارو استعلام شد و کاملاً معتبر بود.',
-      verified: true,
-      likes: 19,
-    },
-  ]);
+  const [reviewsList, setReviewsList] = useState<any[]>([]);
 
   // Q&A state
   const [qaQuestion, setQaQuestion] = useState('');
-  const [qaList, setQaList] = useState([
-    {
-      id: 'qa-1',
-      question: 'آیا این محصول برای پوست‌های مستعد آکنه و چرب مناسب است؟',
-      author: 'رضا سلیمانی',
-      date: '۱۰ مرداد ۱۴۰۳',
-      answer: 'بله، فرمولاسیون این محصول فاقد چربی (Oil-Free) و غیرکومدون‌زا (Non-Comedogenic) است و باعث ایجاد جوش یا انسداد منافذ نمی‌شود.',
-      pharmacistName: 'دکتر سمیرا نوری (داروساز نوژاشاپ)',
-    },
-    {
-      id: 'qa-2',
-      question: 'بهترین زمان مصرف این فرآورده چه ساعتی از روز است؟',
-      author: 'زهرا احمدی',
-      date: '۲ مرداد ۱۴۰۳',
-      answer: 'پیشنهاد می‌شود روزانه دو بار، صبح‌ها پس از شستشوی صورت و شب‌ها قبل از خواب روی پوست تمیز ماساژ داده شود.',
-      pharmacistName: 'دکتر سمیرا نوری (داروساز نوژاشاپ)',
-    },
-    {
-      id: 'qa-3',
-      question: 'آیا مصرف این فرآورده در دوران بارداری یا شیردهی مجاز است؟',
-      author: 'مریم حسینی',
-      date: '۲۵ تیر ۱۴۰۳',
-      answer: 'ترکیبات این محصول ایمن و فاقد رتینوئیدهای سنگین است، اما برای اطمینان بیشتر توصیه می‌شود با پزشک معالج خود مشورت نمایید.',
-      pharmacistName: 'دکتر علیرضا شریفی (داروساز مسئول فنی)',
-    },
-  ]);
+  const [qaList, setQaList] = useState<any[]>([]);
 
   // Scroll to top when product changes
   useEffect(() => {
@@ -149,12 +87,18 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
   const formatPrice = (price: number) => price.toLocaleString('fa-IR');
 
-  // Generate mock gallery images for the product
-  const galleryImages = [
-    product.image,
-    product.image,
-    product.image,
-  ];
+  const galleryImages = product.galleryImages && product.galleryImages.length > 0
+    ? product.galleryImages
+    : [product.image].filter(Boolean);
+
+  const productSpecs = [
+    product.volumeOrSize ? ['حجم / وزن', product.volumeOrSize] : null,
+    product.sku ? ['SKU', product.sku] : null,
+    product.barcode ? ['بارکد', product.barcode] : null,
+    product.stockQuantity !== undefined ? ['موجودی', product.stockQuantity.toLocaleString('fa-IR')] : null,
+    product.salesCount !== undefined ? ['فروش', product.salesCount.toLocaleString('fa-IR')] : null,
+    ...Object.entries(product.attributes || {}).map(([key, value]) => [key, String(value)]),
+  ].filter(Boolean) as [string, string][];
 
   // Related products
   const relatedProducts = allProducts
@@ -390,21 +334,21 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                       <Star
                         key={i}
                         className={`w-3.5 h-3.5 ${
-                          i < Math.floor(product.rating || 4.8)
+                          i < Math.floor(product.rating ?? 0)
                             ? 'fill-amber-400 text-amber-400'
                             : 'text-slate-300'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="font-extrabold text-slate-800">{product.rating || 4.8}</span>
-                  <span className="text-slate-400">({product.ratingCount || 42} ثبت نظر)</span>
+                  <span className="font-extrabold text-slate-800">{product.rating ?? 0}</span>
+                  <span className="text-slate-400">({product.ratingCount ?? 0} ثبت نظر)</span>
                 </div>
 
                 <div className="h-3 w-px bg-slate-200 hidden sm:block" />
 
                 <span className="text-emerald-700 font-bold flex items-center gap-1">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" /> موجود در انبار مرکزی نوژاشاپ
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" /> {product.inStock ? 'موجود در انبار مرکزی نوژاشاپ' : 'ناموجود'}
                 </span>
               </div>
             </div>
@@ -807,8 +751,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                   درباره {product.name}
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {product.description ||
-                    'این فرآورده تخصصی با تکنولوژی پیشرفته و تحت نظارت دقیق آزمایشگاه‌های درماتولوژی تولید گردیده است. فرمولاسیون منحصر‌به‌فرد آن حاوی عصاره‌های خالص و مواد موثره فعال است که در کوتاه‌ترین زمان ممکن، بالاترین میزان اثربخشی و شادابی را برای پوست و مو به ارمغان می‌آورد.'}
+                  {product.description || product.shortDescription || ''}
                 </p>
               </div>
 
@@ -818,43 +761,23 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                   <Clock className="w-4 h-4 text-[#0D7366]" />
                   دستورالعمل و زمان مناسب استفاده:
                 </h3>
-                <ul className="list-disc list-inside text-xs text-slate-600 space-y-1.5 pr-2">
-                  <li>ابتدا موضع مورد نظر را با شوینده ملایم کاملاً پاکسازی کرده و خشک نمایید.</li>
-                  <li>مقدار کافی از فرآورده را روی موضع قرار داده و به آرامی با حرکات دورانی ماساژ دهید تا کاملاً جذب شود.</li>
-                  <li>برای دستیابی به بهترین نتیجه درماتولوژیک، روزانه ۲ بار (صبح و شب) دوره درمان را کامل نمایید.</li>
-                </ul>
+                <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-line">{product.usageInstructions || ''}</p>
               </div>
 
               {/* Tech Specs Table */}
-              <div>
-                <h3 className="font-bold text-xs sm:text-sm text-slate-900 mb-3">مشخصات فنی و استانداردهای محصول:</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between">
-                    <span className="text-slate-400">کشور سازنده:</span>
-                    <strong className="text-slate-800">ایران (تحت لیسانس)</strong>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between">
-                    <span className="text-slate-400">حجم / وزن:</span>
-                    <strong className="text-slate-800">{product.volumeOrSize || 'Standard Size'}</strong>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between">
-                    <span className="text-slate-400">نوع پوست/مو:</span>
-                    <strong className="text-slate-800">انواع پوست حتی حساس</strong>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between">
-                    <span className="text-slate-400">پروانه بهره‌برداری:</span>
-                    <strong className="text-slate-800">۵۶/۲۱۸۷۴</strong>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between">
-                    <span className="text-slate-400">تاریخ انقضا:</span>
-                    <strong className="text-emerald-700">بیش از ۱۸ ماه معتبر</strong>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between">
-                    <span className="text-slate-400">شرایط نگهداری:</span>
-                    <strong className="text-slate-800">دمای ۱۵ تا ۲۵ درجه</strong>
+              {productSpecs.length > 0 && (
+                <div>
+                  <h3 className="font-bold text-xs sm:text-sm text-slate-900 mb-3">مشخصات فنی و استانداردهای محصول:</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                    {productSpecs.map(([label, value]) => (
+                      <div key={label} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between">
+                        <span className="text-slate-400">{label}:</span>
+                        <strong className="text-slate-800">{value}</strong>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
+              )}
             </motion.div>
           )}
 
@@ -865,26 +788,13 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               animate={{ opacity: 1, y: 0 }}
               className="space-y-4"
             >
-              <p className="text-xs text-slate-600 leading-relaxed">
-                فرمولاسیون این فرآورده عاری از هرگونه پارابن، فتالات، سولفات سنگین و ترکیبات آلاینده صنعتی بوده و تنها حاوی بالاترین گرید دارویی ترکیبات فعال زیر است:
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-1">
-                  <strong className="text-xs font-bold text-[#0D7366] block">هیالورونیک اسید ۳ سایز مولکولی</strong>
-                  <p className="text-[11px] text-slate-600">نفوذ به عمیق‌ترین لایه‌های اپیدرم جهت آبرسانی ماندگار و پر کردن خطوط ریز.</p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-1">
-                  <strong className="text-xs font-bold text-[#0D7366] block">نیاسینامید (ویتامین B3)</strong>
-                  <p className="text-[11px] text-slate-600">تنظیم‌کننده ترشح چربی، کوچک‌کننده منافذ باز و روشن‌کننده لک‌های پوستی.</p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-1">
-                  <strong className="text-xs font-bold text-[#0D7366] block">عصاره مریم‌گلی و چای سبز</strong>
-                  <p className="text-[11px] text-slate-600">آنتی‌اکسیدان بسیار قوی جهت خنثی‌سازی رادیکال‌های آزاد و التیام التهابات.</p>
-                </div>
-              </div>
+              {product.ingredients ? (
+                <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-line">
+                  {product.ingredients}
+                </p>
+              ) : (
+                <p className="text-xs text-slate-500">ترکیباتی برای این محصول ثبت نشده است.</p>
+              )}
             </motion.div>
           )}
 

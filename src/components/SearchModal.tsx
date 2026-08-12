@@ -24,30 +24,25 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!searchTerm.trim()) {
       setSearchResults([]);
       setLoading(false);
+      setError(false);
       return;
     }
 
     const timer = setTimeout(async () => {
       setLoading(true);
+      setError(false);
       try {
         const res = await searchService.globalSearch(searchTerm);
         setSearchResults(res.products);
       } catch {
-        // Local fallback
-        const q = searchTerm.toLowerCase();
-        setSearchResults(
-          products.filter(
-            (p) =>
-              p.name.toLowerCase().includes(q) ||
-              p.brand.toLowerCase().includes(q) ||
-              p.category.toLowerCase().includes(q)
-          )
-        );
+        setSearchResults([]);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -152,7 +147,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     )}
                   </div>
 
-                  {filteredProducts.length === 0 ? (
+                  {error ? (
+                    <div className="py-12 text-center text-rose-500">
+                      <p className="text-sm">خطا در دریافت نتایج جستجو از سرور.</p>
+                    </div>
+                  ) : filteredProducts.length === 0 ? (
                     <div className="py-12 text-center text-slate-400">
                       <p className="text-sm">محصولی با مشخصات «{searchTerm}» پیدا نشد.</p>
                       <p className="text-xs mt-1 text-slate-400">
