@@ -1,0 +1,441 @@
+import { DjangoCategory } from '../types';
+
+export const MOCK_DJANGO_CATEGORIES: DjangoCategory[] = [
+  {
+    id: 1,
+    name: 'آرایشی و بهداشتی',
+    slug: 'cosmetics-and-beauty',
+    description: 'مجموعه کامل محصولات مراقبت پوست، مو و آرایشی از معتبرترین برندها',
+    icon: 'spa',
+    is_featured: true,
+    badge: 'پرفروش',
+    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&auto=format&fit=crop&q=80',
+    children: [
+      {
+        id: 11,
+        name: 'مراقبت از پوست',
+        slug: 'skin-care',
+        icon: 'face_retouching_natural',
+        is_featured: true,
+        children: [
+          {
+            id: 111,
+            name: 'کرم ضد آفتاب',
+            slug: 'sunscreen',
+            badge: 'ضروری',
+            product_count: 142,
+            children: [
+              { id: 1111, name: 'ضدآفتاب بی‌رنگ', slug: 'uncolored-sunscreen', product_count: 54 },
+              { id: 1112, name: 'ضدآفتاب کرم پودری (رنگی)', slug: 'colored-sunscreen', product_count: 48 },
+              { id: 1113, name: 'ضدآفتاب فاقد چربی (Acne-Prone)', slug: 'oil-free-sunscreen', product_count: 40 },
+            ],
+          },
+          {
+            id: 112,
+            name: 'کرم ضد لک و روشن‌کننده',
+            slug: 'anti-spot',
+            product_count: 88,
+            children: [
+              { id: 1121, name: 'سرم ویتامین C', slug: 'vitamin-c-serum', product_count: 32 },
+              { id: 1122, name: 'کرم لایه‌بردار و AHA', slug: 'aha-exfoliator', product_count: 26 },
+              { id: 1123, name: 'ضد تیرگی دور چشم', slug: 'eye-dark-circle', product_count: 30 },
+            ],
+          },
+          {
+            id: 113,
+            name: 'آبرسانی و مرطوب‌کننده',
+            slug: 'moisturizers',
+            product_count: 165,
+            children: [
+              { id: 1131, name: 'سرم هیالورونیک اسید', slug: 'hyaluronic-serum', product_count: 42 },
+              { id: 1132, name: 'کرم مرطوب‌کننده پوست چرب', slug: 'oily-skin-moisturizer', product_count: 65 },
+              { id: 1133, name: 'کرم مرطوب‌کننده پوست خشک', slug: 'dry-skin-moisturizer', product_count: 58 },
+            ],
+          },
+          {
+            id: 114,
+            name: 'پاک‌کننده و شوینده صورت',
+            slug: 'cleansers',
+            product_count: 110,
+            children: [
+              { id: 1141, name: 'میسلار واتر', slug: 'micellar-water', product_count: 38 },
+              { id: 1142, name: 'ژل و فوم شستشو', slug: 'cleansing-gel', product_count: 52 },
+              { id: 1143, name: 'تونر تنظیم‌کننده PH', slug: 'facial-toner', product_count: 20 },
+            ],
+          },
+          {
+            id: 115,
+            name: 'ضد چروک و جوانساز',
+            slug: 'anti-aging',
+            badge: 'تخفیف ویژه',
+            product_count: 95,
+            children: [
+              { id: 1151, name: 'سرم رتینول و پپتید', slug: 'retinol-serum', product_count: 35 },
+              { id: 1152, name: 'کرم لیفتینگ و سفت‌کننده', slug: 'lifting-cream', product_count: 40 },
+              { id: 1153, name: 'کرم دور چشم ضد چروک', slug: 'anti-wrinkle-eye-cream', product_count: 20 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 12,
+        name: 'مراقبت از مو',
+        slug: 'hair-care',
+        icon: 'content_cut',
+        children: [
+          {
+            id: 121,
+            name: 'شامپو تخصصی',
+            slug: 'shampoo',
+            product_count: 130,
+            children: [
+              { id: 1211, name: 'شامپو ضد ریزش مو', slug: 'anti-hair-loss-shampoo', product_count: 45 },
+              { id: 1212, name: 'شامپو ضد شوره و خارش', slug: 'anti-dandruff-shampoo', product_count: 35 },
+              { id: 1213, name: 'شامپو فری سولفات (موهای کراتینه)', slug: 'sulfate-free-shampoo', product_count: 50 },
+            ],
+          },
+          {
+            id: 122,
+            name: 'سرم، ماسک و روغن مو',
+            slug: 'hair-treatment',
+            product_count: 85,
+            children: [
+              { id: 1221, name: 'ماسک مو داخل حمام', slug: 'hair-mask-in-shower', product_count: 32 },
+              { id: 1222, name: 'سرم آرگان و کریستال', slug: 'argan-oil-serum', product_count: 28 },
+              { id: 1223, name: 'اسپری دو فاز محافظ حرارت', slug: 'heat-protection-spray', product_count: 25 },
+            ],
+          },
+          {
+            id: 123,
+            name: 'تقویت مژه و ابرو',
+            slug: 'eyelash-eyebrow-growth',
+            product_count: 24,
+          },
+        ],
+      },
+      {
+        id: 13,
+        name: 'آرایش چهره و چشم',
+        slug: 'makeup',
+        icon: 'palette',
+        children: [
+          {
+            id: 131,
+            name: 'آرایش صورت',
+            slug: 'face-makeup',
+            children: [
+              { id: 1311, name: 'کرم پودر و BB کرم', slug: 'foundation-bb-cream', product_count: 60 },
+              { id: 1312, name: 'کانسیلر و پرایمر', slug: 'concealer-primer', product_count: 34 },
+              { id: 1313, name: 'پنکیک و رژگونه', slug: 'compact-powder-blush', product_count: 42 },
+            ],
+          },
+          {
+            id: 132,
+            name: 'آرایش لب و چشم',
+            slug: 'lip-eye-makeup',
+            children: [
+              { id: 1321, name: 'رژ لب جامد و مایع', slug: 'lipstick', product_count: 75 },
+              { id: 1322, name: 'ریمل و خط چشم', slug: 'mascara-eyeliner', product_count: 50 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 14,
+        name: 'بهداشت شخصی و عطر',
+        slug: 'personal-care',
+        icon: 'sanitizer',
+        children: [
+          {
+            id: 141,
+            name: 'بادی اسپلش و دئودورانت',
+            slug: 'body-splash-deodorant',
+            product_count: 90,
+          },
+          {
+            id: 142,
+            name: 'ژل بهداشتی و شامپو بدن',
+            slug: 'body-wash-hygiene',
+            product_count: 62,
+          },
+          {
+            id: 143,
+            name: 'عطر و ادکلن تخصصی',
+            slug: 'perfume',
+            badge: 'لوکس',
+            product_count: 45,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: 'مکمل‌های غذایی و ورزشی',
+    slug: 'supplements',
+    description: 'انواع مکمل‌های اصل ورزشی، رژیمی و ویتامین‌ها با مجوز بهداشت',
+    icon: 'medication',
+    is_featured: true,
+    badge: 'تضمین اصالت',
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80',
+    children: [
+      {
+        id: 21,
+        name: 'مکمل‌های ورزشی و بدنسازی',
+        slug: 'sports-supplements',
+        icon: 'fitness_center',
+        badge: 'محبوب ورزشکاران',
+        children: [
+          {
+            id: 211,
+            name: 'پروتئین وی (Whey)',
+            slug: 'whey-protein',
+            badge: 'پرفروش',
+            product_count: 68,
+            children: [
+              { id: 2111, name: 'پروتئین وی ایزوله (Isolate)', slug: 'whey-isolate', product_count: 24 },
+              { id: 2112, name: 'پروتئین وی کنسانتره', slug: 'whey-concentrate', product_count: 30 },
+              { id: 2113, name: 'پروتئین پگاه و کゼین', slug: 'casein-protein', product_count: 14 },
+            ],
+          },
+          {
+            id: 212,
+            name: 'کراتین (Creatine)',
+            slug: 'creatine',
+            product_count: 45,
+            children: [
+              { id: 2121, name: 'کراتین مونوهیدرات', slug: 'creatine-monohydrate', product_count: 32 },
+              { id: 2122, name: 'کراتین ترکیبی و ترکیبات انرژی‌زا', slug: 'creatine-complex', product_count: 13 },
+            ],
+          },
+          {
+            id: 213,
+            name: 'بی سی ای ای (BCAA) و آمینو',
+            slug: 'bcaa-amino',
+            product_count: 52,
+          },
+          {
+            id: 214,
+            name: 'گینر و افزایش وزن',
+            slug: 'mass-gainer',
+            product_count: 38,
+          },
+          {
+            id: 215,
+            name: 'چربی‌سوز و ال کارنیتین',
+            slug: 'fat-burner-l-carnitine',
+            product_count: 40,
+          },
+        ],
+      },
+      {
+        id: 22,
+        name: 'ویتامین‌ها و املاح معدنی',
+        slug: 'vitamins-minerals',
+        icon: 'vaccines',
+        children: [
+          {
+            id: 221,
+            name: 'مولتی ویتامین عمومی',
+            slug: 'multivitamins',
+            product_count: 85,
+            children: [
+              { id: 2211, name: 'مولتی ویتامین آقایان', slug: 'men-multivitamin', product_count: 28 },
+              { id: 2212, name: 'مولتی ویتامین بانوان', slug: 'women-multivitamin', product_count: 32 },
+              { id: 2213, name: 'مولتی ویتامین بالای ۵۰ سال', slug: 'senior-multivitamin', product_count: 25 },
+            ],
+          },
+          {
+            id: 222,
+            name: 'ویتامین C و زینک',
+            slug: 'vitamin-c-zinc',
+            product_count: 42,
+          },
+          {
+            id: 223,
+            name: 'کلسیم، منیزیم و زینک D3',
+            slug: 'calcium-magnesium-d3',
+            product_count: 60,
+          },
+          {
+            id: 224,
+            name: 'امگا ۳ و روغن ماهی',
+            slug: 'omega-3-fish-oil',
+            product_count: 35,
+          },
+        ],
+      },
+      {
+        id: 23,
+        name: 'مکمل‌های رژیمی و سلامتی',
+        slug: 'health-diet-supplements',
+        icon: 'nature_people',
+        children: [
+          {
+            id: 231,
+            name: 'تقویت سیستم ایمنی',
+            slug: 'immune-booster',
+            product_count: 48,
+          },
+          {
+            id: 232,
+            name: 'مکمل خواب و ملاتونین',
+            slug: 'sleep-melatonin',
+            product_count: 29,
+          },
+          {
+            id: 233,
+            name: 'مکمل مفاصل و غضروف‌ساز',
+            slug: 'joint-support',
+            product_count: 36,
+          },
+          {
+            id: 234,
+            name: 'مکمل کبد چرب و دیابت',
+            slug: 'liver-diabetes-care',
+            product_count: 30,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: 'تجهیزات پزشکی و پایش سلامت',
+    slug: 'medical-equipment',
+    description: 'ابزار دقیق سنجش پزشکی خانگی، کلینیکی و ملزومات ارتوپدی',
+    icon: 'medical_services',
+    children: [
+      {
+        id: 31,
+        name: 'دستگاه‌های سنجش سلامت',
+        slug: 'health-monitors',
+        icon: 'monitor_heart',
+        children: [
+          {
+            id: 311,
+            name: 'فشارسنج دیجیتالی',
+            slug: 'blood-pressure-monitor',
+            badge: 'گارانتی معتبر',
+            product_count: 34,
+            children: [
+              { id: 3111, name: 'فشارسنج بازویی اتوماتیک', slug: 'arm-bp-monitor', product_count: 24 },
+              { id: 3112, name: 'فشارسنج مچی', slug: 'wrist-bp-monitor', product_count: 10 },
+            ],
+          },
+          {
+            id: 312,
+            name: 'تست قند خون و نوار تست',
+            slug: 'glucose-meter-strips',
+            product_count: 40,
+          },
+          {
+            id: 313,
+            name: 'تب‌سنج لیزری و اکسی‌متر',
+            slug: 'thermometer-oximeter',
+            product_count: 28,
+          },
+        ],
+      },
+      {
+        id: 32,
+        name: 'ملزومات ارتوپدی و بهداشتی',
+        slug: 'orthopedics',
+        icon: 'healing',
+        children: [
+          {
+            id: 321,
+            name: 'زانو بند، مچ‌بند و شکم‌بند طبی',
+            slug: 'braces-supports',
+            product_count: 55,
+          },
+          {
+            id: 322,
+            name: 'کفی و صندل طبی',
+            slug: 'orthotic-insoles',
+            product_count: 30,
+          },
+          {
+            id: 323,
+            name: 'بخور و مرطوب‌کننده هوا',
+            slug: 'air-humidifier',
+            product_count: 18,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: 'مادر و کودک',
+    slug: 'mother-and-baby',
+    description: 'محصولات مراقبت از نوزاد، کودک و مادران باردار و شیرده',
+    icon: 'child_care',
+    children: [
+      {
+        id: 41,
+        name: 'تغذیه نوزاد و کودک',
+        slug: 'baby-nutrition',
+        children: [
+          { id: 411, name: 'شیر خشک‌های تخصصی', slug: 'baby-formula', product_count: 42 },
+          { id: 412, name: 'سرلاک و مکمل کودک', slug: 'baby-[#0D7366]', product_count: 35 },
+          { id: 413, name: 'شیشه شیر و پستانک', slug: 'feeding-bottle', product_count: 50 },
+        ],
+      },
+      {
+        id: 42,
+        name: 'مراقبت پوست و بهداشت نوزاد',
+        slug: 'baby-skin-care',
+        children: [
+          { id: 421, name: 'کرم سوختگی و ادرار سوختگی', slug: 'diaper-rash-cream', product_count: 28 },
+          { id: 422, name: 'شامپو و لوسیون کودک', slug: 'baby-shampoo-lotion', product_count: 36 },
+          { id: 423, name: 'دستمال مرطوب کودک', slug: 'baby-wipes', product_count: 22 },
+        ],
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: 'برندهای برتر',
+    slug: 'brands',
+    icon: 'stars',
+    badge: 'اصلی',
+    children: [
+      {
+        id: 51,
+        name: 'برندهای تخصصی ایرانی',
+        slug: 'iranian-brands',
+        children: [
+          { id: 511, name: 'آردن سبوما (Ardene Sebuma)', slug: 'brand-ardene-sebuma', product_count: 32 },
+          { id: 512, name: 'پرایم (Prime Skin Care)', slug: 'brand-prime', product_count: 45 },
+          { id: 513, name: 'هیدرودرم (Hydroderm)', slug: 'brand-hydroderm', product_count: 50 },
+          { id: 514, name: 'سبیکتا (Sebycta)', slug: 'brand-sebycta', product_count: 28 },
+          { id: 515, name: 'فیس دوکس (Face Doux)', slug: 'brand-facedoux', product_count: 36 },
+        ],
+      },
+      {
+        id: 52,
+        name: 'برندهای بین‌المللی',
+        slug: 'international-brands',
+        children: [
+          { id: 521, name: 'لاروش پوزی (La Roche-Posay)', slug: 'brand-laroche', product_count: 65 },
+          { id: 522, name: 'بایودرما (Bioderma)', slug: 'brand-bioderma', product_count: 58 },
+          { id: 523, name: 'ایزدین (ISDIN)', slug: 'brand-isdin', product_count: 40 },
+          { id: 524, name: 'اون (Avene)', slug: 'brand-avene', product_count: 44 },
+        ],
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: 'مجله سلامت',
+    slug: 'health-journal',
+    icon: 'article',
+    url: '#blog',
+    children: [
+      { id: 61, name: 'مقالات تخصصی پوست و مو', slug: 'blog-skin-hair', url: '#blog' },
+      { id: 62, name: 'راهنمای جامع مکمل‌های ورزشی', slug: 'blog-supplements-guide', url: '#blog' },
+      { id: 63, name: 'دانستنی‌ها و بهداشت بانوان', slug: 'blog-[#0D7366]-health', url: '#blog' },
+    ],
+  },
+];
