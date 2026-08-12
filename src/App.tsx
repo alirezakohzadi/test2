@@ -235,7 +235,7 @@ export default function App() {
   } else if (normPath.startsWith('/brands/')) {
     const slug = normPath.replace('/brands/', '');
     isShopActive = true;
-    shopBrandFilter = getCategoryNameFromSlug(slug);
+    shopBrandFilter = slug;
   } else if (normPath === '/shop' || normPath.startsWith('/shop')) {
     isShopActive = true;
   }
@@ -248,8 +248,8 @@ export default function App() {
     navigateTo('/categories/' + getCategorySlug(catName));
   };
 
-  const handleSelectBrand = (brandName: string) => {
-    navigateTo('/brands/' + getCategorySlug(brandName));
+  const handleSelectBrand = (brandSlug: string) => {
+    navigateTo('/brands/' + brandSlug);
   };
 
   // Dynamic SEO Metadata & Structured Data Calculation
