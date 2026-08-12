@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, X, ShoppingBag, Sparkles, Star, Loader2 } from 'lucide-react';
+import { Search, X, ShoppingBag, Star, Loader2 } from 'lucide-react';
 import { Product } from '../types';
 import { searchService } from '../services/searchService';
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  products?: Product[];
   onSelectProduct: (product: Product) => void;
   onAddToCart: (product: Product) => void;
 }
@@ -17,55 +16,45 @@ interface SearchModalProps {
 export const SearchModal: React.FC<SearchModalProps> = ({
   isOpen,
   onClose,
-  products = [],
   onSelectProduct,
   onAddToCart,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!searchTerm.trim()) {
       setSearchResults([]);
       setLoading(false);
+      setSuggestions([]);
+      setError(false);
       return;
     }
 
     const timer = setTimeout(async () => {
       setLoading(true);
+      setError(false);
       try {
-        const res = await searchService.globalSearch(searchTerm);
+        const [res, suggestionRes] = await Promise.all([
+          searchService.globalSearch(searchTerm),
+          searchService.getSearchSuggestions(searchTerm),
+        ]);
         setSearchResults(res.products);
+        setSuggestions(suggestionRes);
       } catch {
-        // Local fallback
-        const q = searchTerm.toLowerCase();
-        setSearchResults(
-          products.filter(
-            (p) =>
-              p.name.toLowerCase().includes(q) ||
-              p.brand.toLowerCase().includes(q) ||
-              p.category.toLowerCase().includes(q)
-          )
-        );
+        setSearchResults([]);
+        setSuggestions([]);
+        setError(true);
       } finally {
         setLoading(false);
       }
     }, 250);
 
     return () => clearTimeout(timer);
-  }, [searchTerm, products]);
-
-  const popularTags = [
-    'ضدآفتاب',
-    'سرم ویتامین سی',
-    'کرم ضد لک',
-    'شامپو کافئین',
-    'بایومارین',
-    'ویتاپلکس',
-    'مولتی ویتامین',
-    'رتینول'
-  ];
+  }, [searchTerm]);
 
   const filteredProducts = searchResults;
 
@@ -121,27 +110,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
             {/* Content Area */}
             <div className="p-5 overflow-y-auto flex-1 space-y-5">
-              {/* Popular Tags */}
-              {!searchTerm && (
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-3">
-                    <Sparkles className="w-4 h-4 text-[#D4AF37]" />
-                    <span>جستجوهای محبوب کاربران:</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {popularTags.map((tag, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSearchTerm(tag)}
-                        className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-[#0D7366]/10 hover:text-[#0D7366] text-slate-600 text-xs font-medium transition-colors border border-slate-200/60"
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               {/* Search Results */}
               {searchTerm && (
                 <div>
@@ -152,7 +120,25 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     )}
                   </div>
 
-                  {filteredProducts.length === 0 ? (
+                  {!error && suggestions.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {suggestions.map((suggestion) => (
+                        <button
+                          key={suggestion}
+                          onClick={() => setSearchTerm(suggestion)}
+                          className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-[#0D7366]/10 hover:text-[#0D7366] text-slate-600 text-xs font-medium transition-colors border border-slate-200/60"
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {error ? (
+                    <div className="py-12 text-center text-rose-500">
+                      <p className="text-sm">خطا در دریافت نتایج جستجو از سرور.</p>
+                    </div>
+                  ) : filteredProducts.length === 0 ? (
                     <div className="py-12 text-center text-slate-400">
                       <p className="text-sm">محصولی با مشخصات «{searchTerm}» پیدا نشد.</p>
                       <p className="text-xs mt-1 text-slate-400">

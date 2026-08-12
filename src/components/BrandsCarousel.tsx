@@ -5,7 +5,7 @@ import { Brand } from '../types';
 import { brandService } from '../services/brandService';
 
 interface BrandsCarouselProps {
-  onSelectBrand?: (brandName: string) => void;
+  onSelectBrand?: (brandSlug: string) => void;
 }
 
 export const BrandsCarousel: React.FC<BrandsCarouselProps> = ({ onSelectBrand }) => {
@@ -110,7 +110,7 @@ export const BrandsCarousel: React.FC<BrandsCarouselProps> = ({ onSelectBrand })
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.03 }}
-                onClick={() => onSelectBrand?.(brand.persianName)}
+                onClick={() => onSelectBrand?.(brand.slug)}
                 className="flex flex-col items-center gap-2 min-w-[100px] sm:min-w-[120px] flex-shrink-0 group cursor-pointer"
               >
                 <div className="w-24 sm:w-32 h-auto flex items-center justify-center group-hover:scale-108 transition-all duration-300">

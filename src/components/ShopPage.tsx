@@ -193,8 +193,14 @@ export const ShopPage: React.FC<ShopPageProps> = ({
 
   const filteredBrands = useMemo(() => {
     if (!brandSearch.trim()) return brandsList;
-    return brandsList.filter((b) => b.name.toLowerCase().includes(brandSearch.toLowerCase().trim()));
+    return brandsList.filter((b) =>
+      [b.name, b.persianName, b.slug].some((value) =>
+        value.toLowerCase().includes(brandSearch.toLowerCase().trim())
+      )
+    );
   }, [brandsList, brandSearch]);
+
+  const selectedBrandLabel = brandsList.find((b) => b.slug === selectedBrand)?.name || selectedBrand;
 
   const startIndex = (currentPage - 1) * pageSize;
 
@@ -380,7 +386,7 @@ export const ShopPage: React.FC<ShopPageProps> = ({
 
             {selectedBrand && (
               <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-bold text-slate-700 shadow-sm flex items-center gap-1.5">
-                برند: <strong className="text-[#0D7366]">{selectedBrand}</strong>
+                برند: <strong className="text-[#0D7366]">{selectedBrandLabel}</strong>
                 <X
                   className="w-3.5 h-3.5 text-slate-400 cursor-pointer hover:text-rose-500"
                   onClick={() => {
@@ -625,11 +631,11 @@ export const ShopPage: React.FC<ShopPageProps> = ({
                   <button
                     key={b.id || b.name}
                     onClick={() => {
-                      setSelectedBrand(b.name === selectedBrand ? '' : b.name);
+                      setSelectedBrand(b.slug === selectedBrand ? '' : b.slug);
                       handleFilterChange();
                     }}
                     className={`w-full text-right px-2.5 py-1.5 rounded-xl font-bold transition-all flex items-center justify-between cursor-pointer ${
-                      selectedBrand === b.name ? 'bg-emerald-50 text-[#0D7366]' : 'text-slate-600 hover:bg-slate-50'
+                      selectedBrand === b.slug ? 'bg-emerald-50 text-[#0D7366]' : 'text-slate-600 hover:bg-slate-50'
                     }`}
                   >
                     <span className="truncate">{b.name}</span>
@@ -708,9 +714,9 @@ export const ShopPage: React.FC<ShopPageProps> = ({
                   >
                     {/* Top Badges */}
                     <div className="absolute top-3.5 right-3.5 z-10 flex flex-col gap-1">
-                      {prod.discountPercent && (
+                      {prod.discountPercentage && (
                         <span className="bg-rose-500 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-lg shadow-sm">
-                          %{prod.discountPercent} تخفیف
+                          %{prod.discountPercentage} تخفیف
                         </span>
                       )}
                       {prod.isNew && (
