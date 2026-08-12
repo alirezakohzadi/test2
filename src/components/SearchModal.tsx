@@ -22,14 +22,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!searchTerm.trim()) {
       setSearchResults([]);
       setLoading(false);
-      setSuggestions([]);
       setError(false);
       return;
     }
@@ -46,7 +44,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         setSuggestions(suggestionRes);
       } catch {
         setSearchResults([]);
-        setSuggestions([]);
         setError(true);
       } finally {
         setLoading(false);
@@ -119,20 +116,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                       <span className="text-[10px] text-[#0D7366]">برای جزییات بیشتر روی محصول کلیک کنید</span>
                     )}
                   </div>
-
-                  {!error && suggestions.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {suggestions.map((suggestion) => (
-                        <button
-                          key={suggestion}
-                          onClick={() => setSearchTerm(suggestion)}
-                          className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-[#0D7366]/10 hover:text-[#0D7366] text-slate-600 text-xs font-medium transition-colors border border-slate-200/60"
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </div>
-                  )}
 
                   {error ? (
                     <div className="py-12 text-center text-rose-500">
