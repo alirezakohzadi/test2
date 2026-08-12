@@ -50,6 +50,7 @@ export function mapDjangoProductToUI(item: DjangoProduct): Product {
 export function mapDjangoBrandToUI(item: DjangoBrand): Brand {
   return {
     id: String(item.id),
+    slug: item.slug,
     name: item.name,
     persianName: item.persian_name || item.name,
     logo: getMediaUrl(item.logo_url),
